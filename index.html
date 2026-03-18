@@ -155,6 +155,19 @@
             border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; transition: 0.3s;
         }
         .submit-btn:hover { background: #3b6bde; }
+        
+        /* Success Message styling */
+        #form-success-msg {
+            display: none;
+            color: var(--correct-border);
+            background: var(--correct-bg);
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 15px;
+            text-align: center;
+            font-weight: 600;
+            border: 1px solid var(--correct-border);
+        }
 
     </style>
 </head>
@@ -195,16 +208,17 @@
         <!-- Suggestion Box -->
         <div class="suggestion-box">
             <h3>💬 તમારો અભિપ્રાય / સૂચન</h3>
-            <!-- Replace 'YOUR_FORM_ID' with your actual Formspree ID later to receive emails -->
-            <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+            <!-- AJAX Form Submission (No Redirection) -->
+            <form id="suggestionForm" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
                 <div class="form-group">
                     <input type="text" name="name" class="form-control" placeholder="તમારું નામ (Your Name)" required>
                 </div>
                 <div class="form-group">
                     <textarea name="message" class="form-control" placeholder="તમારો સંદેશ કે પ્રશ્ન અહી લખો... (Your message...)" required></textarea>
                 </div>
-                <button type="submit" class="submit-btn">સંદેશ મોકલો ✉️</button>
+                <button type="submit" class="submit-btn" id="submitBtnText">સંદેશ મોકલો ✉️</button>
             </form>
+            <div id="form-success-msg">તમારો સંદેશ સફળતાપૂર્વક મોકલવામાં આવ્યો છે! આભાર.</div>
         </div>
     </div>
 
@@ -425,6 +439,56 @@
         moreTestsScreen.style.display = "none";
         homeScreen.style.display = "block";
     }
+
+    // --- Suggestion Form Submission Logic ---
+    const suggestionForm = document.getElementById("suggestionForm");
+    const successMsg = document.getElementById("form-success-msg");
+    const submitBtn = document.getElementById("submitBtnText");
+
+    suggestionForm.addEventListener("submit", function(event) {
+        event.preventDefault(); // ફોર્મ સબમિટ થતાં પેજ રિફ્રેશ થતું અટકાવશે 
+        
+        const actionUrl = suggestionForm.getAttribute("action");
+        
+        // જો યુઝરે પોતાનો ID નાખ્યો ન હોય તો...
+        if(actionUrl.includes("YOUR_FORM_ID")) {
+            alert("ભૂલ: કૃપા કરીને કોડમાં લાઈન નંબર 168 પર 'YOUR_FORM_ID' ની જગ્યાએ તમારો અસલી Formspree ID નાખો.");
+            return;
+        }
+
+        submitBtn.innerText = "મોકલાઈ રહ્યું છે...";
+        submitBtn.disabled = true;
+
+        const formData = new FormData(suggestionForm);
+
+        fetch(actionUrl, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'Accept': 'application/json'
+            }
+        }).then(response => {
+            if (response.ok) {
+                successMsg.style.display = "block";
+                suggestionForm.reset();
+                submitBtn.innerText = "સંદેશ મોકલો ✉️";
+                submitBtn.disabled = false;
+                
+                // 5 સેકન્ડ પછી લીલો મેસેજ છુપાવી દેવા
+                setTimeout(() => {
+                    successMsg.style.display = "none";
+                }, 5000);
+            } else {
+                alert("માફ કરશો, સંદેશ મોકલવામાં કોઈ ભૂલ આવી છે. ફરી પ્રયાસ કરો.");
+                submitBtn.innerText = "સંદેશ મોકલો ✉️";
+                submitBtn.disabled = false;
+            }
+        }).catch(error => {
+            alert("ઇન્ટરનેટ કનેક્શનમાં ભૂલ છે અથવા લિંક ખોટી છે.");
+            submitBtn.innerText = "સંદેશ મોકલો ✉️";
+            submitBtn.disabled = false;
+        });
+    });
 </script>
 
 </body>
