@@ -3,268 +3,418 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>મનોવિજ્ઞાન ક્વિઝ - Academic Portal</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Mukta:wght@400;600;700&display=swap" rel="stylesheet">
+    <title>મનોવિજ્ઞાન - શૈક્ષણિક પોર્ટલ</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Mukta:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-dark: #090a15;
-            --card-bg: #151832;
-            --card-hover: #1e2245;
-            --text-main: #ffffff;
-            --text-muted: #8b92b2;
-            --accent-gold: #f4d068;
-            --accent-pink: #f472b6;
-            --accent-blue: #4d88ff;
-            --accent-purple: #c85aff;
-            --correct-bg: #113322;
-            --correct-border: #22c55e;
-            --wrong-bg: #3b1219;
-            --wrong-border: #ef4444;
+            --bg-body: #f4f7f6;
+            --bg-white: #ffffff;
+            --text-dark: #2d3436;
+            --text-muted: #636e72;
+            --primary-color: #f39c12; /* Orange-Yellow from screenshot */
+            --primary-hover: #e67e22;
+            --secondary-color: #2980b9;
+            --border-color: #dfe6e9;
+            --correct-bg: #e3fbed;
+            --correct-border: #27ae60;
+            --correct-text: #219653;
+            --wrong-bg: #fdeaea;
+            --wrong-border: #e74c3c;
+            --wrong-text: #c0392b;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Mukta', sans-serif; }
 
         body {
-            font-family: 'Mukta', sans-serif;
-            background-color: var(--bg-dark);
-            color: var(--text-main);
+            background-color: var(--bg-body);
+            color: var(--text-dark);
             min-height: 100vh;
             display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
+            flex-direction: column;
             overflow-x: hidden;
-            padding: 20px 0;
         }
 
-        body::before {
-            content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background-image: 
-                radial-gradient(circle at 15% 50%, rgba(255,255,255,0.08) 1px, transparent 1px),
-                radial-gradient(circle at 85% 30%, rgba(255,255,255,0.1) 1px, transparent 1px),
-                radial-gradient(circle at 50% 80%, rgba(255,255,255,0.05) 1.5px, transparent 1.5px);
-            background-size: 150px 150px; z-index: -1;
+        /* --- Top Navigation Bar --- */
+        .navbar {
+            background-color: var(--bg-white);
+            padding: 15px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
-
-        .container { width: 90%; max-width: 650px; position: relative; z-index: 1; }
-
-        /* Header / Logo */
-        .logo-container { text-align: center; margin-bottom: 30px; }
-        .brain-icon {
-            width: 80px; height: 80px; background: linear-gradient(135deg, var(--card-bg), #2a1f4a);
-            border-radius: 50%; margin: 0 auto 15px auto; display: flex; justify-content: center;
-            align-items: center; font-size: 35px; box-shadow: 0 0 30px rgba(200, 90, 255, 0.4);
-            border: 2px solid rgba(255,255,255,0.1);
-        }
-        .title { font-family: 'Montserrat', sans-serif; font-size: 28px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 5px; }
-        .title .gold { color: var(--accent-gold); text-shadow: 0 0 10px rgba(244, 208, 104, 0.5); }
-        .title .pink { color: var(--accent-pink); text-shadow: 0 0 10px rgba(244, 114, 182, 0.5); }
-        .subtitle { color: var(--text-muted); font-size: 15px; letter-spacing: 1px; }
-
-        /* Visitor Counter */
-        .visitor-counter {
-            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
-            padding: 8px 15px; border-radius: 30px; display: inline-flex; align-items: center;
-            gap: 10px; margin-top: 15px; font-size: 14px; color: var(--accent-blue); font-weight: 600;
-        }
-        .visitor-counter img { height: 20px; border-radius: 5px; }
-
-        /* Chapters */
-        .chapters-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px; }
-        @media (max-width: 480px) { .chapters-grid { grid-template-columns: 1fr; } }
-        .chapter-card { background: var(--card-bg); border-radius: 12px; padding: 20px; transition: all 0.3s ease; cursor: pointer; border: 1px solid rgba(255,255,255,0.05); }
-        .chapter-card:hover { transform: translateY(-5px); background: var(--card-hover); border-color: rgba(255,255,255,0.2); }
-        .ch-1 { border-bottom: 3px solid var(--accent-blue); }
-        .ch-2 { border-bottom: 3px solid var(--accent-purple); }
-        .ch-title-small { font-size: 12px; font-family: 'Montserrat', sans-serif; color: var(--accent-blue); font-weight: 700; margin-bottom: 8px; letter-spacing: 1px; }
-        .ch-2 .ch-title-small { color: var(--accent-gold); }
-        .ch-name { font-size: 18px; font-weight: 700; margin-bottom: 5px; line-height: 1.3; }
-        .ch-desc { color: var(--text-muted); font-size: 13px; }
-
-        /* Buttons */
-        .btn-primary {
-            display: block; width: 100%; max-width: 300px; margin: 10px auto;
-            background: linear-gradient(90deg, #6b73ff, #c85aff); color: white; border: none;
-            padding: 14px 25px; font-size: 18px; font-weight: 700; border-radius: 30px;
-            cursor: pointer; transition: all 0.3s ease; box-shadow: 0 10px 20px rgba(107, 115, 255, 0.3); font-family: 'Mukta', sans-serif;
-        }
-        .btn-primary:hover { box-shadow: 0 15px 25px rgba(200, 90, 255, 0.5); transform: scale(1.05); }
-        .btn-secondary { background: transparent; border: 2px solid var(--accent-blue); color: var(--accent-blue); box-shadow: none; }
-        .btn-secondary:hover { background: rgba(77, 136, 255, 0.1); box-shadow: 0 0 15px rgba(77, 136, 255, 0.3); }
-
-        /* Quiz Screen */
-        #quiz-screen, #result-screen, #more-tests-screen {
-            display: none; background: var(--card-bg); padding: 30px 25px; border-radius: 20px;
-            border: 1px solid rgba(255,255,255,0.05); box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-        }
-
-        .quiz-top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .home-btn { background: rgba(255,255,255,0.1); border: none; color: white; padding: 8px 15px; border-radius: 20px; cursor: pointer; font-family: 'Mukta'; font-weight: 600; display: flex; align-items: center; gap: 5px; transition: 0.3s; }
-        .home-btn:hover { background: rgba(255,255,255,0.2); }
         
-        .quiz-header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.1); margin-bottom: 25px; }
-        .q-count { color: var(--accent-pink); font-weight: 700; font-size: 16px; }
-        .score-live { background: rgba(255,255,255,0.1); padding: 5px 15px; border-radius: 20px; font-size: 14px; font-weight: bold; }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--text-dark);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+        }
+        .logo svg { width: 32px; height: 32px; fill: var(--primary-color); }
 
-        .question-text { font-size: 20px; font-weight: 600; margin-bottom: 25px; line-height: 1.5; }
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+        .nav-links li {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-dark);
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: color 0.3s;
+        }
+        .nav-links li:hover { color: var(--primary-color); }
+
+        @media (max-width: 768px) {
+            .navbar { padding: 15px 20px; flex-direction: column; gap: 15px; }
+            .nav-links { gap: 15px; flex-wrap: wrap; justify-content: center; }
+        }
+
+        /* --- Hero Section --- */
+        .hero {
+            position: relative;
+            background-image: url('https://images.unsplash.com/photo-1524178232363-1fb2b075b655?q=80&w=2070&auto=format&fit=crop'); /* Teacher/Education Background */
+            background-size: cover;
+            background-position: center;
+            height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: #fff;
+        }
+        .hero::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.6); /* Dark Overlay */
+            z-index: 1;
+        }
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            padding: 0 20px;
+        }
+        .hero h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 42px;
+            font-weight: 800;
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        .hero p {
+            font-size: 18px;
+            font-weight: 400;
+            margin-bottom: 30px;
+            line-height: 1.6;
+            color: #f1f2f6;
+        }
+        .hero-btns {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* Buttons matching screenshot */
+        .btn {
+            padding: 14px 30px;
+            font-size: 16px;
+            font-weight: 700;
+            text-transform: uppercase;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Montserrat', sans-serif;
+        }
+        .btn-yellow {
+            background-color: var(--primary-color);
+            color: white;
+            border: 2px solid var(--primary-color);
+        }
+        .btn-yellow:hover {
+            background-color: transparent;
+            color: var(--primary-color);
+        }
+        .btn-outline {
+            background-color: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+        .btn-outline:hover {
+            background-color: white;
+            color: var(--text-dark);
+        }
+
+        /* --- Main Container Area --- */
+        .main-container {
+            flex: 1;
+            width: 100%;
+            max-width: 800px;
+            margin: -40px auto 40px auto;
+            position: relative;
+            z-index: 10;
+            padding: 0 20px;
+        }
+
+        /* Screens (Quiz, Result, Suggestion) */
+        .screen-card {
+            background: var(--bg-white);
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            display: none; /* Hidden by default */
+        }
+        #home-content { display: block; } /* Home is visible by default */
+
+        /* --- Chapters Area (Moved below hero) --- */
+        .chapters-section {
+            margin-top: 20px;
+        }
+        .section-title {
+            text-align: center;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 20px;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        /* --- Quiz Screen --- */
+        .quiz-top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .score-live {
+            background: var(--bg-body);
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 16px;
+            font-weight: bold;
+            color: var(--secondary-color);
+            border: 1px solid var(--border-color);
+        }
+        .q-count { color: var(--primary-color); font-weight: 700; font-size: 18px; }
+        
+        .question-text {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 30px;
+            line-height: 1.5;
+            color: var(--text-dark);
+        }
 
         .option-btn {
-            width: 100%; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1);
-            color: var(--text-main); padding: 15px 20px; margin-bottom: 12px; border-radius: 12px;
-            font-size: 16px; text-align: left; cursor: pointer; transition: all 0.2s ease; font-family: 'Mukta', sans-serif; font-weight: 600;
+            width: 100%;
+            background: var(--bg-white);
+            border: 2px solid var(--border-color);
+            color: var(--text-dark);
+            padding: 16px 20px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            font-size: 18px;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 600;
         }
-        .option-btn:hover:not(:disabled) { background: rgba(255,255,255,0.08); border-color: var(--accent-blue); transform: translateX(5px); }
-        .option-btn.correct { background: var(--correct-bg); border-color: var(--correct-border); color: #4ade80; box-shadow: 0 0 15px rgba(34, 197, 94, 0.2); }
-        .option-btn.wrong { background: var(--wrong-bg); border-color: var(--wrong-border); color: #f87171; box-shadow: 0 0 15px rgba(239, 68, 68, 0.2); }
+        .option-btn:hover:not(:disabled) {
+            border-color: var(--secondary-color);
+            background-color: #f0f8ff;
+            transform: translateX(5px);
+        }
+        .option-btn.correct { background: var(--correct-bg); border-color: var(--correct-border); color: var(--correct-text); }
+        .option-btn.wrong { background: var(--wrong-bg); border-color: var(--wrong-border); color: var(--wrong-text); }
         .option-btn:disabled { cursor: not-allowed; opacity: 0.9; }
 
-        /* Navigation Buttons */
-        .nav-buttons { display: flex; justify-content: space-between; margin-top: 25px; gap: 15px; }
+        .nav-buttons { display: flex; justify-content: space-between; margin-top: 30px; gap: 15px; }
         .nav-btn {
-            flex: 1; padding: 12px; border-radius: 12px; border: none; font-size: 16px; font-weight: bold;
-            cursor: pointer; transition: 0.3s; font-family: 'Mukta'; color: white;
+            flex: 1; padding: 14px; border-radius: 8px; border: none; font-size: 16px; font-weight: bold;
+            cursor: pointer; transition: 0.3s; color: white; display: flex; align-items: center; justify-content: center; gap: 8px;
         }
-        #prev-btn { background: rgba(255,255,255,0.1); display: none; }
-        #prev-btn:hover { background: rgba(255,255,255,0.2); }
-        #next-btn { background: linear-gradient(90deg, #6b73ff, #c85aff); display: none; }
-        #next-btn:hover { opacity: 0.9; transform: translateY(-2px); }
+        #prev-btn { background: #95a5a6; display: none; }
+        #prev-btn:hover { background: #7f8c8d; }
+        #next-btn { background: var(--secondary-color); display: none; }
+        #next-btn:hover { background: #21618c; }
 
-        /* Result Screen */
-        .result-icon { font-size: 60px; margin-bottom: 15px; }
-        .result-score { font-family: 'Montserrat', sans-serif; font-size: 40px; font-weight: 800; margin-bottom: 10px; }
-        .feedback-text { font-size: 20px; font-weight: 700; margin-bottom: 30px; padding: 15px; border-radius: 12px; line-height: 1.4; }
-        .feedback-good { background: rgba(34,197,94,0.1); color: #4ade80; border: 1px solid #22c55e;}
-        .feedback-avg { background: rgba(244,208,104,0.1); color: #f4d068; border: 1px solid #f4d068;}
-        .feedback-bad { background: rgba(239,68,68,0.1); color: #f87171; border: 1px solid #ef4444;}
+        /* --- Result Screen --- */
+        .result-icon { font-size: 60px; margin-bottom: 15px; display: flex; justify-content: center; }
+        .result-score { font-family: 'Montserrat', sans-serif; font-size: 45px; font-weight: 800; margin-bottom: 10px; color: var(--secondary-color); }
+        .feedback-text { font-size: 20px; font-weight: 700; margin-bottom: 30px; padding: 20px; border-radius: 8px; line-height: 1.4; }
+        .feedback-good { background: var(--correct-bg); color: var(--correct-text); border: 1px solid var(--correct-border);}
+        .feedback-avg { background: #fff8e1; color: #f39c12; border: 1px solid #f39c12;}
+        .feedback-bad { background: var(--wrong-bg); color: var(--wrong-text); border: 1px solid var(--wrong-border);}
 
-        /* Suggestion Box Form */
+        /* --- Suggestion Box --- */
         .suggestion-box {
-            margin-top: 50px; background: rgba(255,255,255,0.03); padding: 25px;
-            border-radius: 15px; border: 1px solid rgba(255,255,255,0.05); text-align: left;
+            margin-top: 40px; background: var(--bg-white); padding: 35px;
+            border-radius: 12px; border: 1px solid var(--border-color); box-shadow: 0 5px 15px rgba(0,0,0,0.05);
         }
-        .suggestion-box h3 { font-size: 18px; color: var(--accent-gold); margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
-        .form-group { margin-bottom: 15px; }
+        .suggestion-box h3 { font-size: 22px; color: var(--text-dark); margin-bottom: 20px; display: flex; align-items: center; gap: 10px; border-bottom: 2px solid var(--primary-color); padding-bottom: 10px; display: inline-flex;}
+        .form-group { margin-bottom: 20px; }
         .form-control {
-            width: 100%; padding: 12px 15px; border-radius: 8px; background: rgba(0,0,0,0.3);
-            border: 1px solid rgba(255,255,255,0.1); color: white; font-family: 'Mukta', sans-serif; font-size: 15px;
+            width: 100%; padding: 15px; border-radius: 8px; background: var(--bg-body);
+            border: 1px solid var(--border-color); color: var(--text-dark); font-size: 16px;
         }
-        .form-control:focus { outline: none; border-color: var(--accent-blue); }
-        textarea.form-control { height: 100px; resize: none; }
+        .form-control:focus { outline: none; border-color: var(--secondary-color); background: var(--bg-white); }
+        textarea.form-control { height: 120px; resize: vertical; }
         .submit-btn {
-            background: var(--accent-blue); color: white; border: none; padding: 10px 20px;
-            border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; transition: 0.3s;
+            background: var(--primary-color); color: white; border: none; padding: 15px 25px;
+            border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; transition: 0.3s; font-size: 18px; display: flex; justify-content: center; align-items: center; gap: 10px;
         }
-        .submit-btn:hover { background: #3b6bde; }
-        
-        /* Success Message styling */
-        #form-success-msg {
-            display: none;
-            color: var(--correct-border);
-            background: var(--correct-bg);
-            padding: 12px;
-            border-radius: 8px;
-            margin-top: 15px;
-            text-align: center;
-            font-weight: 600;
-            border: 1px solid var(--correct-border);
-        }
+        .submit-btn:hover { background: var(--primary-hover); }
+        #form-success-msg { display: none; color: var(--correct-text); background: var(--correct-bg); padding: 15px; border-radius: 8px; margin-top: 15px; text-align: center; font-weight: 600; border: 1px solid var(--correct-border); }
 
+        /* --- Footer --- */
+        footer {
+            background: var(--text-dark); color: white; padding: 30px; text-align: center; margin-top: auto;
+        }
+        .visitor-counter { margin-top: 15px; display: inline-flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.1); padding: 8px 15px; border-radius: 20px; font-size: 14px;}
+        .visitor-counter img { height: 20px; border-radius: 4px; }
+
+        /* Utility SVG Icon styling */
+        .svg-icon { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    
-    <!-- HOME SCREEN -->
-    <div id="home-screen">
-        <div class="logo-container">
-            <div class="brain-icon">🧠</div>
-            <div class="title"><span class="gold">મનોવિજ્ઞાન</span> <span class="pink">ક્વિઝ</span></div>
-            <div class="subtitle">10 MCQ • 2 અધ્યાય • Gujarati Medium</div>
+    <!-- Top Navbar -->
+    <nav class="navbar">
+        <div class="logo" onclick="goHome()">
+            <!-- SVG Education Hat Logo -->
+            <svg viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+            મનોવિજ્ઞાન
+        </div>
+        <ul class="nav-links">
+            <li onclick="goHome()">હોમ</li>
+            <li onclick="document.getElementById('suggestion-section').scrollIntoView({behavior: 'smooth'})">સંપર્ક</li>
+        </ul>
+    </nav>
+
+    <!-- Hero Section (Visible only on Home) -->
+    <div id="hero-section" class="hero">
+        <div class="hero-content">
+            <h1>મનોવિજ્ઞાન ક્વિઝ પોર્ટલ</h1>
+            <p>સ્વાગત છે! સ્પર્ધાત્મક પરીક્ષાઓ અને શૈક્ષણિક હેતુઓ માટે ખાસ તૈયાર કરેલ મનોવિજ્ઞાનના વિવિધ પ્રકરણોની ઓનલાઈન ક્વિઝ આપીને તમારું જ્ઞાન ચકાસો.</p>
+            <div class="hero-btns">
+                <button class="btn btn-yellow" onclick="startQuiz(1)">
+                    પ્રકરણ ૧ ની ક્વિઝ 
+                    <svg class="svg-icon" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                </button>
+                <button class="btn btn-outline" onclick="startQuiz(2)">
+                    પ્રકરણ ૨ ની ક્વિઝ
+                    <svg class="svg-icon" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="main-container">
+        
+        <!-- HOME CONTENT (Below Hero) -->
+        <div id="home-content">
+            <!-- Suggestion Box (Contact) -->
+            <div id="suggestion-section" class="suggestion-box">
+                <h3>
+                    <svg class="svg-icon" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                    તમારો અભિપ્રાય / સૂચન
+                </h3>
+                <form id="suggestionForm" action="https://formspree.io/f/xnjgoeod" method="POST">
+                    <div class="form-group">
+                        <input type="text" name="name" class="form-control" placeholder="તમારું નામ (Your Name)" required>
+                    </div>
+                    <div class="form-group">
+                        <textarea name="message" class="form-control" placeholder="તમારો સંદેશ કે પ્રશ્ન અહી લખો... (Your message...)" required></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn" id="submitBtnText">
+                        <svg class="svg-icon" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                        સંદેશ મોકલો
+                    </button>
+                </form>
+                <div id="form-success-msg">તમારો સંદેશ સફળતાપૂર્વક મોકલવામાં આવ્યો છે! આભાર.</div>
+            </div>
+        </div>
+
+        <!-- QUIZ SCREEN -->
+        <div id="quiz-screen" class="screen-card">
+            <div class="quiz-top-bar">
+                <button class="btn btn-outline" style="border-color:var(--border-color); color:var(--text-dark); padding: 8px 15px;" onclick="goHome()">
+                    <svg class="svg-icon" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                    હોમ
+                </button>
+                <div class="score-live">સ્કોર: <span id="live-score">0</span></div>
+            </div>
             
-            <div class="visitor-counter">
-                👁️ કુલ મુલાકાતીઓ: 
-                <!-- Free Github Visitor Badge -->
-                <img src="https://profile-counter.glitch.me/psychology128/count.svg" alt="Visitor Counter">
+            <div style="margin-bottom: 25px;">
+                <div class="q-count">પ્રશ્ન <span id="current-q-num">1</span> / <span id="total-q-count">10</span></div>
+            </div>
+            
+            <div id="question-text" class="question-text">Loading...</div>
+            <div id="options-area"></div>
+            
+            <div class="nav-buttons">
+                <button id="prev-btn" class="nav-btn" onclick="prevQuestion()">
+                    <svg class="svg-icon" viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+                    પાછળ
+                </button>
+                <button id="next-btn" class="nav-btn" onclick="nextQuestion()">
+                    આગળ 
+                    <svg class="svg-icon" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                </button>
             </div>
         </div>
 
-        <div class="chapters-grid">
-            <div class="chapter-card ch-1" onclick="startQuiz(1)">
-                <div class="ch-title-small">📘 CHAPTER 1</div>
-                <div class="ch-name">હેતુલક્ષી પ્રશ્નો</div>
-                <div class="ch-desc">4 પ્રશ્નો (Q1-Q4)</div>
+        <!-- RESULT SCREEN -->
+        <div id="result-screen" class="screen-card" style="text-align: center;">
+            <div class="result-icon">
+                <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="var(--primary-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>
             </div>
-            <div class="chapter-card ch-2" onclick="startQuiz(2)">
-                <div class="ch-title-small">🧪 CHAPTER 2</div>
-                <div class="ch-name">મનોવિજ્ઞાનનો વિકાસ</div>
-                <div class="ch-desc">6 પ્રશ્નો (Q5-Q10)</div>
+            <div style="color: var(--text-muted); margin-bottom: 5px; font-size: 18px;">તમારું પરિણામ</div>
+            <div id="final-score" class="result-score">0/10</div>
+            
+            <div id="feedback-msg" class="feedback-text"></div>
+            
+            <div style="display:flex; gap:15px; justify-content:center; flex-wrap:wrap;">
+                <button class="btn btn-yellow" onclick="startQuiz('all')">ફરીથી ટેસ્ટ આપો</button>
+                <button class="btn btn-outline" style="border-color:var(--border-color); color:var(--text-dark);" onclick="goHome()">હોમ પેજ પર પાછા ફરો</button>
             </div>
         </div>
 
-        <button class="btn-primary" onclick="startQuiz('all')">🚀 સંપૂર્ણ ટેસ્ટ શરૂ કરો</button>
-        <button class="btn-primary btn-secondary" onclick="showMoreTests()">📚 વધુ વિષયો જુઓ</button>
-
-        <!-- Suggestion Box -->
-        <div class="suggestion-box">
-            <h3>💬 તમારો અભિપ્રાય / સૂચન</h3>
-            <!-- AJAX Form Submission (No Redirection) -->
-            <form id="suggestionForm" action="https://formspree.io/f/xnjgoeod" method="POST">
-                <div class="form-group">
-                    <input type="text" name="name" class="form-control" placeholder="તમારું નામ (Your Name)" required>
-                </div>
-                <div class="form-group">
-                    <textarea name="message" class="form-control" placeholder="તમારો સંદેશ કે પ્રશ્ન અહી લખો... (Your message...)" required></textarea>
-                </div>
-                <button type="submit" class="submit-btn" id="submitBtnText">સંદેશ મોકલો ✉️</button>
-            </form>
-            <div id="form-success-msg">તમારો સંદેશ સફળતાપૂર્વક મોકલવામાં આવ્યો છે! આભાર.</div>
-        </div>
     </div>
 
-    <!-- MORE TESTS SCREEN -->
-    <div id="more-tests-screen" style="text-align: center;">
-        <div class="result-icon">🚧</div>
-        <h2 style="color: var(--accent-gold); margin-bottom: 15px;">નવા વિષયો ટૂંક સમયમાં...</h2>
-        <p style="color: var(--text-muted); margin-bottom: 30px;">અમે અન્ય વિષયો અને સ્પર્ધાત્મક પરીક્ષા માટેના પ્રશ્નો તૈયાર કરી રહ્યા છીએ.</p>
-        <button class="btn-primary btn-secondary" onclick="goHome()">🏠 પાછા ફરો</button>
-    </div>
-
-    <!-- QUIZ SCREEN -->
-    <div id="quiz-screen">
-        <div class="quiz-top-bar">
-            <button class="home-btn" onclick="goHome()">🏠 હોમ</button>
-            <div class="score-live">સ્કોર: <span id="live-score">0</span></div>
+    <!-- Footer -->
+    <footer>
+        <p>© 2026 મનોવિજ્ઞાન શૈક્ષણિક પોર્ટલ. સર્વાધિકાર સુરક્ષિત.</p>
+        <div class="visitor-counter">
+            <svg class="svg-icon" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+            કુલ મુલાકાતીઓ: 
+            <img src="https://profile-counter.glitch.me/psychology128/count.svg" alt="Visitor Counter">
         </div>
-        
-        <div class="quiz-header">
-            <div class="q-count">પ્રશ્ન <span id="current-q-num">1</span> / <span id="total-q-count">10</span></div>
-        </div>
-        
-        <div id="question-text" class="question-text">Loading...</div>
-        <div id="options-area"></div>
-        
-        <div class="nav-buttons">
-            <button id="prev-btn" class="nav-btn" onclick="prevQuestion()">⬅️ પાછળ</button>
-            <button id="next-btn" class="nav-btn" onclick="nextQuestion()">આગળ ➔</button>
-        </div>
-    </div>
-
-    <!-- RESULT SCREEN -->
-    <div id="result-screen" style="text-align: center;">
-        <div id="result-emoji" class="result-icon">🎓</div>
-        <div style="color: var(--text-muted); margin-bottom: 5px;">તમારું પરિણામ</div>
-        <div id="final-score" class="result-score">0/10</div>
-        
-        <div id="feedback-msg" class="feedback-text"></div>
-        
-        <button class="btn-primary" onclick="startQuiz('all')">🔄 ફરીથી ટેસ્ટ આપો</button>
-        <button class="btn-primary btn-secondary" onclick="goHome()">🏠 હોમ પેજ પર પાછા ફરો</button>
-    </div>
-
-</div>
+    </footer>
 
 <script>
+    // પ્રશ્નોનો ડેટાબેઝ
     const questions = [
         { chapter: 1, question: "૧. મનોવિજ્ઞાન (સાઈકોલોજી) શબ્દ કઈ ભાષામાંથી ઊતરી આવ્યો છે?", answers: [{ text: "(a) સ્પેનિશ", correct: false }, { text: "(b) લેટિન", correct: false }, { text: "(c) ગ્રીક", correct: true }, { text: "(d) ફ્રેન્ચ", correct: false }] },
         { chapter: 1, question: "૨. ભારતમાં મનોવિજ્ઞાન ક્ષેત્રમાં સૌપ્રથમ પ્રયોગશાળા ક્યારે સ્થાપવામાં આવી?", answers: [{ text: "(a) 1932", correct: false }, { text: "(b) 1945", correct: false }, { text: "(c) 1906", correct: false }, { text: "(d) 1905", correct: true }] },
@@ -278,10 +428,10 @@
         { chapter: 2, question: "૧૦. વર્તનવાદના પ્રણેતા કોણ હતા?", answers: [{ text: "(a) વોટ્સન", correct: true }, { text: "(b) કોહલર", correct: false }, { text: "(c) વર્ધીમર", correct: false }, { text: "(d) સી.ટી.મોર્ગન", correct: false }] }
     ];
 
-    const homeScreen = document.getElementById("home-screen");
+    const heroSection = document.getElementById("hero-section");
+    const homeContent = document.getElementById("home-content");
     const quizScreen = document.getElementById("quiz-screen");
     const resultScreen = document.getElementById("result-screen");
-    const moreTestsScreen = document.getElementById("more-tests-screen");
     
     const questionElement = document.getElementById("question-text");
     const optionsArea = document.getElementById("options-area");
@@ -293,23 +443,24 @@
 
     let currentQuestionsList = [];
     let currentQuestionIndex = 0;
-    
-    // Store user answers so they can go Back & Forward without losing progress
-    // Format: { indexSelected: number, isCorrect: boolean }
     let userSelections = {}; 
 
+    // ક્વિઝ શરૂ કરવાનું ફંક્શન
     function startQuiz(type) {
         if (type === 1) currentQuestionsList = questions.filter(q => q.chapter === 1);
         else if (type === 2) currentQuestionsList = questions.filter(q => q.chapter === 2);
         else currentQuestionsList = questions;
 
-        userSelections = {}; // Reset previous answers
+        userSelections = {};
         currentQuestionIndex = 0;
         
-        homeScreen.style.display = "none";
+        // Hide home areas, show quiz area
+        heroSection.style.display = "none";
+        homeContent.style.display = "none";
         resultScreen.style.display = "none";
-        moreTestsScreen.style.display = "none";
+        
         quizScreen.style.display = "block";
+        window.scrollTo({ top: 0, behavior: 'smooth' });
         
         totalQCountElement.innerText = currentQuestionsList.length;
         updateScoreDisplay();
@@ -317,12 +468,11 @@
     }
 
     function showQuestion() {
-        optionsArea.innerHTML = ''; // Clear old buttons
+        optionsArea.innerHTML = ''; 
         qNumElement.innerText = currentQuestionIndex + 1;
         let currentQuestion = currentQuestionsList[currentQuestionIndex];
         questionElement.innerText = currentQuestion.question;
 
-        // Has this question been answered previously?
         let answeredData = userSelections[currentQuestionIndex];
 
         currentQuestion.answers.forEach((answer, index) => {
@@ -331,7 +481,6 @@
             button.classList.add("option-btn");
             if(answer.correct) button.dataset.correct = "true";
 
-            // If already answered, apply styling & disable
             if (answeredData !== undefined) {
                 button.disabled = true;
                 if (answer.correct) {
@@ -346,19 +495,19 @@
             optionsArea.appendChild(button);
         });
 
-        // Navigation Buttons Logic
-        prevBtn.style.display = currentQuestionIndex > 0 ? "block" : "none";
+        prevBtn.style.display = currentQuestionIndex > 0 ? "flex" : "none";
         
         if (answeredData !== undefined) {
-            nextBtn.style.display = "block";
-            nextBtn.innerText = currentQuestionIndex === currentQuestionsList.length - 1 ? "પરિણામ જુઓ 🏆" : "આગળ ➔";
+            nextBtn.style.display = "flex";
+            nextBtn.innerHTML = currentQuestionIndex === currentQuestionsList.length - 1 
+                ? 'પરિણામ જુઓ <svg class="svg-icon" viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>' 
+                : 'આગળ <svg class="svg-icon" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>';
         } else {
             nextBtn.style.display = "none";
         }
     }
 
     function selectAnswer(e, indexSelected, isCorrect) {
-        // Save the selection
         userSelections[currentQuestionIndex] = { indexSelected, isCorrect };
         
         const selectedBtn = e.target;
@@ -372,8 +521,10 @@
         
         updateScoreDisplay();
         
-        nextBtn.style.display = "block";
-        nextBtn.innerText = currentQuestionIndex === currentQuestionsList.length - 1 ? "પરિણામ જુઓ 🏆" : "આગળ ➔";
+        nextBtn.style.display = "flex";
+        nextBtn.innerHTML = currentQuestionIndex === currentQuestionsList.length - 1 
+                ? 'પરિણામ જુઓ <svg class="svg-icon" viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>' 
+                : 'આગળ <svg class="svg-icon" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>';
     }
 
     function updateScoreDisplay() {
@@ -404,40 +555,34 @@
     function showResult() {
         quizScreen.style.display = "none";
         resultScreen.style.display = "block";
+        window.scrollTo({ top: 0, behavior: 'smooth' });
         
         let score = updateScoreDisplay();
         document.getElementById("final-score").innerText = `${score} / ${currentQuestionsList.length}`;
         
         let percentage = (score / currentQuestionsList.length) * 100;
         const feedbackMsg = document.getElementById("feedback-msg");
-        const resultEmoji = document.getElementById("result-emoji");
         
         feedbackMsg.className = "feedback-text"; 
         if (percentage >= 80) {
-            feedbackMsg.innerHTML = "અદ્ભુત! તમારી તૈયારી ઉત્તમ છે 🌟<br><small style='font-size:16px;'>(Excellent Preparation!)</small>";
+            feedbackMsg.innerHTML = "અદ્ભુત! તમારી તૈયારી ઉત્તમ છે 🌟";
             feedbackMsg.classList.add("feedback-good");
-            resultEmoji.innerText = "🏆";
         } else if (percentage >= 50) {
-            feedbackMsg.innerHTML = "સારી પ્રગતિ! હજુ થોડી મહેનત કરો 👍<br><small style='font-size:16px;'>(Good progress!)</small>";
+            feedbackMsg.innerHTML = "સારી પ્રગતિ! હજુ થોડી મહેનત કરો 👍";
             feedbackMsg.classList.add("feedback-avg");
-            resultEmoji.innerText = "👏";
         } else {
-            feedbackMsg.innerHTML = "ચિંતા ન કરો, ફરીથી પુનરાવર્તન કરો 💪<br><small style='font-size:16px;'>(Needs more practice!)</small>";
+            feedbackMsg.innerHTML = "ચિંતા ન કરો, ફરીથી પુનરાવર્તન કરો 💪";
             feedbackMsg.classList.add("feedback-bad");
-            resultEmoji.innerText = "📚";
         }
     }
 
-    function showMoreTests() {
-        homeScreen.style.display = "none";
-        moreTestsScreen.style.display = "block";
-    }
-
+    // હોમ પેજ પર પરત ફરવા
     function goHome() {
         quizScreen.style.display = "none";
         resultScreen.style.display = "none";
-        moreTestsScreen.style.display = "none";
-        homeScreen.style.display = "block";
+        heroSection.style.display = "flex";
+        homeContent.style.display = "block";
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     // --- Suggestion Form Submission Logic ---
@@ -446,11 +591,10 @@
     const submitBtn = document.getElementById("submitBtnText");
 
     suggestionForm.addEventListener("submit", function(event) {
-        event.preventDefault(); // ફોર્મ સબમિટ થતાં પેજ રિફ્રેશ થતું અટકાવશે 
-        
+        event.preventDefault();
         const actionUrl = suggestionForm.getAttribute("action");
 
-        submitBtn.innerText = "મોકલાઈ રહ્યું છે...";
+        submitBtn.innerHTML = "મોકલાઈ રહ્યું છે...";
         submitBtn.disabled = true;
 
         const formData = new FormData(suggestionForm);
@@ -458,28 +602,23 @@
         fetch(actionUrl, {
             method: 'POST',
             body: formData,
-            headers: {
-                'Accept': 'application/json'
-            }
+            headers: { 'Accept': 'application/json' }
         }).then(response => {
             if (response.ok) {
                 successMsg.style.display = "block";
                 suggestionForm.reset();
-                submitBtn.innerText = "સંદેશ મોકલો ✉️";
+                submitBtn.innerHTML = '<svg class="svg-icon" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg> સંદેશ મોકલો';
                 submitBtn.disabled = false;
                 
-                // 5 સેકન્ડ પછી લીલો મેસેજ છુપાવી દેવા
-                setTimeout(() => {
-                    successMsg.style.display = "none";
-                }, 5000);
+                setTimeout(() => { successMsg.style.display = "none"; }, 5000);
             } else {
                 alert("માફ કરશો, સંદેશ મોકલવામાં કોઈ ભૂલ આવી છે. ફરી પ્રયાસ કરો.");
-                submitBtn.innerText = "સંદેશ મોકલો ✉️";
+                submitBtn.innerHTML = '<svg class="svg-icon" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg> સંદેશ મોકલો';
                 submitBtn.disabled = false;
             }
         }).catch(error => {
             alert("ઇન્ટરનેટ કનેક્શનમાં ભૂલ છે અથવા લિંક ખોટી છે.");
-            submitBtn.innerText = "સંદેશ મોકલો ✉️";
+            submitBtn.innerHTML = '<svg class="svg-icon" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg> સંદેશ મોકલો';
             submitBtn.disabled = false;
         });
     });
